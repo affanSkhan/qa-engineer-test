@@ -8,6 +8,8 @@ const MAX_PAYMENT_AMOUNT = 50000;
 router.get('/', authenticate, (req, res) => {
   try {
     const payments = getPayments(req.user.id);
+
+    // Fix Bug A: payment amounts must remain numeric for API consumers.
     const formattedPayments = payments.map(p => ({
       id: p.id,
       amount: Number(p.amount),
@@ -62,6 +64,7 @@ router.post('/', authenticate, (req, res) => {
       return res.status(400).json({ error: 'Valid amount is required' });
     }
 
+    // Fix Bug B: reject transactions above the assignment's €50,000 limit.
     if (numericAmount > MAX_PAYMENT_AMOUNT) {
       return res.status(400).json({
         error: `Amount exceeds maximum of €${MAX_PAYMENT_AMOUNT}`
