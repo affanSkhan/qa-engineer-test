@@ -1,0 +1,95 @@
+{
+  "info": {
+    "name": "EU Pay QA Engineer - Completed Submission",
+    "description": "Core API requests for validating the completed assignment.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:3000" },
+    { "key": "auth_token", "value": "" },
+    { "key": "webhook_signature", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"merchant@test.com\",\n  \"password\": \"Test123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "List Payments",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{auth_token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/payments",
+              "host": ["{{base_url}}"],
+              "path": ["api", "payments"]
+            }
+          }
+        },
+        {
+          "name": "Reject Large Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 999999,\n  \"currency\": \"EUR\",\n  \"customer_email\": \"customer@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/payments",
+              "host": ["{{base_url}}"],
+              "path": ["api", "payments"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Webhook",
+      "item": [
+        {
+          "name": "Payment Status",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-webhook-signature", "value": "{{webhook_signature}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payment_id\": \"1\",\n  \"status\": \"completed\",\n  \"event_id\": \"evt_123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/webhooks/payment-status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "webhooks", "payment-status"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
