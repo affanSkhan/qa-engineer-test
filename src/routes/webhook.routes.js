@@ -16,6 +16,7 @@ router.post('/payment-status', (req, res) => {
   try {
     const signature = req.headers['x-webhook-signature'];
 
+    // Fix Bug D: reject requests that do not prove knowledge of the webhook secret.
     if (!signature || !/^[a-f0-9]{64}$/i.test(signature)) {
       return res.status(401).json({ error: 'Invalid signature' });
     }
@@ -39,6 +40,7 @@ router.post('/payment-status', (req, res) => {
       });
     }
 
+    // Fix Bug E: idempotency prevents duplicate provider deliveries from reapplying state.
     if (db.processed_webhooks.includes(event_id)) {
       return res.status(200).json({
         success: true,
