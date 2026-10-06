@@ -7,6 +7,7 @@ const router = express.Router();
 const JWT_SECRET = 'test-secret-key-do-not-use-in-production';
 
 function validateEmail(email) {
+  // Fix Bug C: require a hostname containing a top-level domain.
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   return emailRegex.test(email);
 }
