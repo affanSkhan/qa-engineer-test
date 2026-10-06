@@ -23,10 +23,10 @@ app.use(express.json());
 initDatabase();
 
 io.on("connection", (socket) => {
-  console.log("📱 Client connected:", socket.id);
+  console.info("📱 Client connected:", socket.id);
   socket.on("join_merchant", (merchantId) => socket.join("merchant_" + merchantId));
   socket.on("join_table", (tableNumber) => socket.join("table_" + tableNumber));
-  socket.on("disconnect", () => console.log("📱 Client disconnected:", socket.id));
+  socket.on("disconnect", () => console.info("📱 Client disconnected:", socket.id));
 });
 
 app.set("io", io);
@@ -35,7 +35,13 @@ app.get("/", (req, res) => {
   res.json({
     message: "EU Pay QA Test API",
     version: "1.0.0",
-    features: ["🔐 Authentication (JWT)", "💳 Payment Processing", "🪝 Webhook Handling", "🍽️ Table Orders (Socket.IO)", "📄 E-Invoicing"],
+    features: [
+      "🔐 Authentication (JWT)",
+      "💳 Payment Processing",
+      "🪝 Webhook Handling",
+      "🍽️ Table Orders (Socket.IO)",
+      "📄 E-Invoicing"
+    ],
     endpoints: [
       "POST /api/auth/register",
       "POST /api/auth/login",
@@ -66,12 +72,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "Something went wrong!" });
 });
 
-// Do not bind port when imported by tests. npm start still starts the server.
+// Keep the app importable by tests without binding port 3000.
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   httpServer.listen(PORT, () => {
-    console.log("✅ EU Pay QA Test API running on http://localhost:" + PORT);
-    console.log("📖 Visit http://localhost:" + PORT + " for available endpoints");
-    console.log("🔌 Socket.IO ready for real-time updates");
+    console.info("✅ EU Pay QA Test API running on http://localhost:" + PORT);
+    console.info("📖 Visit http://localhost:" + PORT + " for available endpoints");
+    console.info("🔌 Socket.IO ready for real-time updates");
   });
 }
 
