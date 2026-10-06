@@ -42,7 +42,7 @@ export function initDatabase() {
     created_at: new Date(),
   });
 
-  console.log("📊 Database initialized with test data");
+  console.info("📊 Database initialized with test data");
 }
 
 export function findUserByEmail(email) {
