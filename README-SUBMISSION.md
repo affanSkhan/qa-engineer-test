@@ -1,1 +1,3 @@
-Uploading the completed EU Pay QA Engineer assignment.
+# EU Pay QA Engineer Assignment — Submission
+
+I systematically tested the supplied Node.js payment API across happy paths, negative cases, edge cases, and security scenarios and reproduced all seven intentional bugs. I fixed the payment type and transaction-limit issues, tightened email validation, added HMAC signature verification and webhook idempotency, prevented duplicate table orders, and blocked duplicate e-invoice submissions. I added more than 10 Node.js/Supertest regression tests covering the seven fixes plus authentication and additional edge cases, with a webhook-focused test plan covering security, replay, concurrency, and integration risks. The existing API routes and contracts were preserved wherever possible.
