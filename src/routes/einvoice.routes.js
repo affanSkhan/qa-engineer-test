@@ -41,6 +41,7 @@ router.post('/submit', authenticate, async (req, res) => {
       });
     }
 
+    // Fix Bug G: prevent a previously submitted/accepted invoice from being resubmitted.
     if (
       invoice.einvoice_status === 'submitted' ||
       invoice.einvoice_status === 'accepted'
