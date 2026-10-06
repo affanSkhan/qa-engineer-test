@@ -8,12 +8,7 @@ const router = express.Router();
 router.get('/', authenticate, (req, res) => {
   try {
     const orders = (db.table_orders || []).filter(o => o.merchant_id === req.user.id);
-
-    res.json({
-      success: true,
-      data: orders,
-      count: orders.length
-    });
+    res.json({ success: true, data: orders, count: orders.length });
   } catch (error) {
     console.error('Get table orders error:', error);
     res.status(500).json({ error: 'Failed to fetch table orders' });
@@ -34,6 +29,7 @@ router.post('/', (req, res) => {
       return res.status(400).json({ error: 'Order must have at least one item' });
     }
 
+    // Fix Bug F: one merchant/table can have only one pending order.
     const existingOrder = (db.table_orders || []).find(
       o =>
         o.merchant_id === merchant_id &&
@@ -83,7 +79,6 @@ router.patch('/:id/status', authenticate, (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
-
     const validStatuses = [
       'pending',
       'confirmed',
